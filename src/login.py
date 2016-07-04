@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-payload = {'username': 'username', 'password': 'password'}
+import urllib
+payload = {'username': '14xj00168', 'password': 'Chester)&1'}
 
 with requests.Session() as c:
     c.post('http://www.mahindraecolecentrale.edu.in/portal/login/index.php', data=payload)
@@ -35,9 +36,30 @@ with requests.Session() as c:
             if 'Feedback' not in link.text:
                 print link.text,'\n'
                 lt.append(link.get('href'))
-        else:
-            Semester[key] = lt
+            else:
+                Semester[key] = lt
 
     #print Semester
     rq = c.get(Semester['SemesterIV2014'][2])
-    print rq.content
+    links_soup = BeautifulSoup(rq.content)
+    raw = links_soup.find_all("a", {"class": ""})
+    dow = {}
+    for x in raw:
+        dow[x.text] = x.get('href')
+    download_links = {}
+    for name,link in dow.iteritems():
+        if 'mod/resource' in link:
+            download_links[name] = link
+    #print download_links,len(download_links)
+    #urllib.urlretrieve(download_links[0],'yeah.html')
+    print download_links
+    for name,link in download_links.iteritems():
+        try:
+            r = c.get(link)
+            f = open(name, 'wb')
+            for chunk in r.iter_content(chunk_size=512 * 1024):
+                if chunk: # filter out keep-alive new chunks
+                    f.write(chunk)
+                    f.close()
+        except:
+            print 1
