@@ -1,6 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
-payload = {'username': '14xj00168', 'password': 'Chester)&1'}
+payload = {'username': 'username', 'password': 'password'}
 
 with requests.Session() as c:
     c.post('http://www.mahindraecolecentrale.edu.in/portal/login/index.php', data=payload)
