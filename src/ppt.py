@@ -1,90 +1,105 @@
 import requests
 from bs4 import BeautifulSoup
-import magic
-payload = {'username': 'username', 'password': 'password'}
+#import src.exceptions
+def login(username, password, session):
+    print "logging in user"
+    payload = {'username': username, 'password': password}
+    session.post('http://www.mahindraecolecentrale.edu.in/portal/login/index.php', data=payload)
 
-with requests.Session() as c:
-    c.post('http://www.mahindraecolecentrale.edu.in/portal/login/index.php', data=payload)
-    r = c.get('http://www.mahindraecolecentrale.edu.in/portal/')
-    data = r.content
-    #print data
-    soup = BeautifulSoup(data)
-    #links = soup.find_all("a")
-    """for link in links:
-        if link.get('href') != None:
-            if 'http' in link.get('href'):
-                print "<a href='%s'>%s</a>" %(link.get('href'),link.text)"""
+def get_home_page(session):
+    print 'retrieving home page'
+    raw_home_page = session.get('http://www.mahindraecolecentrale.edu.in/portal/')
+    home_page_data = raw_home_page.content
+    if 'You are logged in as' in home_page_data:
+        print 'logged in succesfully'
+        return home_page_data
+    #else:
+        #raise LoginError("Your username or password is wrong")
+
+def get_category_tree(home_page_data):
+    soup = BeautifulSoup(home_page_data)
     category_data = soup.find_all("div", {"class": "course_category_tree"})
+    return category_data
+
+def get_semester_course_links(category_data):
     Semester = {}
     for item in category_data:
-        for i in range(0,9):
+        for i in range(0,len(item.contents)):
             category = item.contents[i]
-            sub = category.find_all("div", {"class": "category_label"})
-            #print sub
-            if len(sub) != 0:
-                sem = sub[0]
+            sub_category = category.find_all("div", {"class": "category_label"})
+            #print sub_category
+            if len(sub_category) != 0:
+                sem = sub_category[0]
                 if len(sem) != 0:
                     if 'Semester' in sem.text:
                         var_name = ''.join(e for e in sem.text if e.isalnum())
-                        t = category.find_all("a", {"class": "course_link"})
-                        if t!= []:
-                            Semester[var_name] = t
+                        course_link = category.find_all("a", {"class": "course_link"})
+                        if course_link!= []:
+                            Semester[var_name] = course_link
 
     for key,value in Semester.iteritems():
         lt = []
+        del_sem = []
+        d = {}
         for link in value:
             if 'Feedback' not in link.text:
-                print link.text,'\n'
-                lt.append(link.get('href'))
+                d[link.text] = link.get('href')
+                #print link.text,'\n'
+                #lt.append(link.get('href'))
             else:
                 Semester[key] = lt
+                del_sem.append(key)
+        #print d
+        Semester[key] = d
+    for key in del_sem:
+        del Semester[key]
+    print Semester
+    return Semester
 
-    #print Semester
-    rq = c.get(Semester['SemesterIV2014'][8])
-    path = 'SemesterIV2014/OOP/'
-    links_soup = BeautifulSoup(rq.content)
+def get_semester(sem_num,year):
+    roman_table = {1: 'I', 2: 'II', 3:'III', 4:'IV', 5:'V', 6:'VI', 7:'VII', 8:'VIII'}
+    sem = 'Semester' + roman_table[sem_num] + str(year)
+    return sem
+
+def download_course(course_url,session):
+    request = session.get(course_url)
+    links_soup = BeautifulSoup(request.content)
     raw = links_soup.find_all("a", {"class": ""})
-    dow = {}
+    down = {}
     for x in raw:
         st = str(x)
         if 'powerpoint' in st:
-            dow[x.text + '.ppt'] = x.get('href')
+            down[x.text + '.ppt'] = x.get('href')
         else:
-            dow[x.text] = x.get('href')
+            down[x.text] = x.get('href')
 
     download_links = {}
-    for name,link in dow.iteritems():
+    for name,link in down.iteritems():
         if 'mod/resource' in link:
             download_links[name] = link
-    #print download_links,len(download_links)
-    #urllib.urlretrieve(download_links[0],'yeah.html')
-    print download_links
-    ppts = {}
     for name,link in download_links.iteritems():
         try:
-            r = c.get(link)
-            f_name = path + name
-            f = open(f_name, 'wb')
+            print '---------Downloading file %s ----------' %name
+            r = session.get(link)
+            f = open(name, 'wb')
             for chunk in r.iter_content(chunk_size=512 * 1024):
                 if chunk: # filter out keep-alive new chunks
                     f.write(chunk)
+            f.close()
         except:
             print name
-            ppts[name] = link
-    f.close()
-    for name,link in ppts.iteritems():
-        try:
-            f_name = name+'.ppt'
-            f = open(f_name, 'wb')
-            for chunk in r.iter_content(chunk_size=512 * 1024):
-                if chunk: # filter out keep-alive new chunks
-                    f.write(chunk)
-        except:
-            print name
-        f.close()
-    """r = c.get('http://www.mahindraecolecentrale.edu.in/portal/mod/resource/view.php?id=1127')
-    f = open('', 'wb')
-    for chunk in r.iter_content(chunk_size=512 * 1024):
-        if chunk: # filter out keep-alive new chunks
-            f.write(chunk)
-    f.close()"""
+def download_all_courses(semester_course_links_list,session):
+    for count in range(len(semester_course_links_list)):
+        print 'Downloading course %d of %d' %(count+1,len(semester_course_links_list))
+        download_course(semester_course_links_list[count],session)
+
+
+if __name__ == '__main__':
+    with requests.Session() as session:
+        login('14xj00168','Chester)&1',session)
+        home_page = get_home_page(session)
+        category = get_category_tree(home_page)
+        Semester = get_semester_course_links(category)
+        download_sem = get_semester(4,2014)
+        #download_course(Semester[download_sem][8],session)
+        #download_all_courses(Semester[download_sem],session)
