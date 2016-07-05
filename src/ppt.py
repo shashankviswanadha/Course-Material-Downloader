@@ -40,15 +40,17 @@ with requests.Session() as c:
                 Semester[key] = lt
 
     #print Semester
-    rq = c.get(Semester['SemesterIV2014'][2])
+    rq = c.get(Semester['SemesterIV2014'][8])
+    path = 'SemesterIV2014/OOP/'
     links_soup = BeautifulSoup(rq.content)
     raw = links_soup.find_all("a", {"class": ""})
     dow = {}
-    file_tp = links_soup.find_all("span", {"class": "resourcelinkdetails"})
-    print file_tp
-    count = 0
     for x in raw:
-        dow[x.text] = x.get('href')
+        st = str(x)
+        if 'powerpoint' in st:
+            dow[x.text + '.ppt'] = x.get('href')
+        else:
+            dow[x.text] = x.get('href')
 
     download_links = {}
     for name,link in dow.iteritems():
@@ -61,7 +63,8 @@ with requests.Session() as c:
     for name,link in download_links.iteritems():
         try:
             r = c.get(link)
-            f = open(name, 'wb')
+            f_name = path + name
+            f = open(f_name, 'wb')
             for chunk in r.iter_content(chunk_size=512 * 1024):
                 if chunk: # filter out keep-alive new chunks
                     f.write(chunk)
@@ -78,9 +81,6 @@ with requests.Session() as c:
                     f.write(chunk)
         except:
             print name
-        m = magic.Magic(mime_encoding=True)
-        m.from_buffer(f)
-        #print magic.from_file(f, mime=True)
         f.close()
     """r = c.get('http://www.mahindraecolecentrale.edu.in/portal/mod/resource/view.php?id=1127')
     f = open('', 'wb')
