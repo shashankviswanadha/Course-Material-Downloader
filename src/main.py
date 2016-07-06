@@ -2,6 +2,7 @@
 import requests
 from bs4 import BeautifulSoup
 from custom_exceptions import *
+from config import *
 import os
 from getpass import getpass
 
@@ -62,15 +63,23 @@ def get_semester(sem_num,year,semester):
         raise SemesterError("The year or semester number you enterd does not exist")
     return sem
 
-def download_course(semester,course_name,Semester,session):
+def download_course(semester,course_name,pat,Semester,session):
     try:
+        if pat[-1] == '/':
+            pat = pat[:-1]
+        path = pat
         print 'Downloading course %s' %str(course_name.encode('utf8'))
-        sem_directory = semester
-        if not os.path.exists(sem_directory):
-            os.makedirs(sem_directory)
-        if not os.path.exists(semester + '/' + course_name):
-            os.makedirs(semester + '/' + course_name)
-        path = semester + '/' + course_name + '/'
+        if not os.path.exists(path + '/' + 'Moodownloader'):
+            os.makedirs(path + '/' + 'Moodownloader')
+        path = path + '/' + 'Moodownloader' + '/'
+        path = path + semester
+        if not os.path.exists(path):
+            os.makedirs(path)
+        path = path + '/' + course_name
+        if not os.path.exists(path):
+            os.makedirs(path)
+        path = path + '/'
+        print path
         course_url = Semester[semester][course_name]
         request = session.get(course_url)
         links_soup = BeautifulSoup(request.content)
@@ -110,7 +119,7 @@ def download_all_courses(semester_name,Semester,session):
     count = 0
     for name,course_link in Semester[semester_name].iteritems():
         print 'Downloading course %d of %d' %(count+1,len(Semester[semester_name]))
-        download_course(semester_name,name,Semester,session)
+        download_course(semester_name,name,Config.path,Semester,session)
         count += 1
 
 if __name__ == '__main__':
@@ -134,6 +143,6 @@ if __name__ == '__main__':
                     flag = 1
                     break
         if flag == 1:
-            download_course(sem,course,Semester,session)
+            download_course(sem,course,Config.path,Semester,session)
         else:
             raise CourseNameError("Enter the precise course name as it appears on moodle")
