@@ -42,18 +42,22 @@ INSTALLING AND RUNNING THE 'Moodownloader':
  Open a terminal/command prompt and run the following commands:
  
   $ git clone https://github.com/shashankviswanadha/Course-Material-Downloader.git
+  
   $ cd Course-Material-Downloader
+  
   $ cd src
   
  Now open the config.py file in your editor and set your path ,wherever you want it to be and save the file. (There is an example to guide you)
  Now run the application using the command:
+ 
   $ python main.py
   
  You will have to enter your moodle userid and password and also the semester number and your year of joining(2015/2014).
  Then you have to enter 'all' to download all courses in the semster or enter the precise course name to download a single course.
  You will find a folder named 'Moodownloader' in the path you set which has all your downloads.
  
- Enjoy and hope this helps.
+ Hope this helps.
+ Please suggest any improvements and you're welcome to fork the repository if you think you can contribute.
  
 
 
