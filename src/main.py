@@ -79,7 +79,6 @@ def download_course(semester,course_name,pat,Semester,session):
         if not os.path.exists(path):
             os.makedirs(path)
         path = path + '/'
-        print path
         course_url = Semester[semester][course_name]
         request = session.get(course_url)
         links_soup = BeautifulSoup(request.content)
@@ -142,7 +141,7 @@ if __name__ == '__main__':
                 if course in value:
                     flag = 1
                     break
-        if flag == 1:
-            download_course(sem,course,Config.path,Semester,session)
-        else:
-            raise CourseNameError("Enter the precise course name as it appears on moodle")
+            if flag == 1:
+                download_course(sem,course,Config.path,Semester,session)
+            else:
+                raise CourseNameError("Enter the precise course name as it appears on moodle")
