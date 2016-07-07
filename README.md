@@ -59,7 +59,10 @@ INSTALLING AND RUNNING THE 'Moodownloader':
  Hope this helps.
  Please suggest any improvements and you're welcome to fork the repository if you think you can contribute.
  
-
+ Note: It does not download the content for the bio course in semester 4. The bio faculty did no       t organize their content properly, they uploaded all their files to forums. Weird!
+       
+ Improvements to be made: Right now it does not download the content from sub-folders, maybe I 
+                          will work on it some time when I am free.
 
 
 

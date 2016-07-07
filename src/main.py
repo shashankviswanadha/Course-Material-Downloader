@@ -68,7 +68,7 @@ def download_course(semester,course_name,pat,Semester,session):
         if pat[-1] == '/':
             pat = pat[:-1]
         path = pat
-        print 'Downloading course %s' %str(course_name.encode('utf8'))
+        print '%s' %str(course_name.encode('utf8'))
         if not os.path.exists(path + '/' + 'Moodownloader'):
             os.makedirs(path + '/' + 'Moodownloader')
         path = path + '/' + 'Moodownloader' + '/'
