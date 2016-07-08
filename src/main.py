@@ -3,6 +3,10 @@ import requests
 from bs4 import BeautifulSoup
 from custom_exceptions import *
 from config import *
+import urllib2
+import cookielib
+import sys
+from utils import Login
 import os
 from getpass import getpass
 
@@ -68,7 +72,7 @@ def download_course(semester,course_name,pat,Semester,session):
         if pat[-1] == '/':
             pat = pat[:-1]
         path = pat
-        print '%s' %str(course_name.encode('utf8'))
+        print 'Downloading %s' %str(course_name.encode('utf8'))
         if not os.path.exists(path + '/' + 'Moodownloader'):
             os.makedirs(path + '/' + 'Moodownloader')
         path = path + '/' + 'Moodownloader' + '/'
@@ -123,16 +127,20 @@ def download_all_courses(semester_name,Semester,session):
 
 if __name__ == '__main__':
     with requests.Session() as session:
-        username = raw_input("Enter your moodle username:")
-        password = getpass("Enter your password")
+        username = raw_input("Enter your moodle username:  ")
+        password = getpass("Enter your password:  ")
+        try:
+            Login(username,str(password))
+        except:
+            pass
         login(username,password,session)
         home_page = get_home_page(session)
         category = get_category_tree(home_page)
         Semester = get_semester_course_links(category)
-        sem_num = int(input('Enter the semester number'))
-        year = int(input('Enter your year of joining'))
+        sem_num = int(input('Enter the semester number:  '))
+        year = int(input('Enter your year of joining:  '))
         sem = get_semester(sem_num,year,Semester)
-        course = raw_input("Enter 'all' to download all courses in the semester or enter the precise course name to download only that course")
+        course = raw_input("Enter 'all' to download all courses in the semester or enter the precise course name to download only that course:  ")
         flag = 0
         if course == 'all':
             download_all_courses(sem,Semester,session)
