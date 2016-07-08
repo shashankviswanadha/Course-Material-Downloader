@@ -10,6 +10,8 @@ This application requires python version 2.7 and its some of its packages:
 2. requests
 3. os
 4. getpass
+5. urllib2
+6. cookielib
 
 INSTALLING PYTHON AND DEPENDENCIES:
 
@@ -22,6 +24,8 @@ INSTALLING PYTHON AND DEPENDENCIES:
   $ sudo apt-get install python-bs4
   $ sudo apt-get install python-requests
   $ sudo apt-get install python-getpass (ignore if already there)
+  $ sudo apt-get install python-urllib2
+  $ sudo apt-get install python-cookielib
             
 -WINDOWS FREAKS:
 
@@ -32,6 +36,8 @@ INSTALLING PYTHON AND DEPENDENCIES:
                              1. python.exe -m pip install requests
                              2. python.exe -m pip install bs4
                              3. python.exe -m pip install getpass (ignore if already there)
+                             4. python.exe -m pip install urllib2
+                             5. python.exe -m pip install cookielib
   5. Now, you're actually ready to download the application. So, thats why I called you freaks (So many things to install!)
 
 
@@ -59,7 +65,7 @@ INSTALLING AND RUNNING THE 'Moodownloader':
  Hope this helps.
  Please suggest any improvements and you're welcome to fork the repository if you think you can contribute.
  
- Note: It does not download the content for the bio course in semester 4. The bio faculty did no       t organize their content properly, they uploaded all their files to forums. Weird!
+ Note: It does not download the content for the bio course in semester 4. The bio faculty did not organize their content properly, they uploaded all their files to forums. Weird!
        
  Improvements to be made: Right now it does not download the content from sub-folders, maybe I 
                           will work on it some time when I am free.
