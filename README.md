@@ -20,11 +20,17 @@ INSTALLING PYTHON AND DEPENDENCIES:
  Run the following commands in a terminal
  
   $ sudo apt-get update
+  
   $ sudo apt-get install python
+  
   $ sudo apt-get install python-bs4
+  
   $ sudo apt-get install python-requests
+  
   $ sudo apt-get install python-getpass (ignore if already there)
+  
   $ sudo apt-get install python-urllib2
+  
   $ sudo apt-get install python-cookielib
             
 -WINDOWS FREAKS:
@@ -33,11 +39,18 @@ INSTALLING PYTHON AND DEPENDENCIES:
   2. Installing python: Follow the instructions on this page (the 1st answer) to download, install and set the path for python.
   3. Installing pip: Open a command prompt as adminstrator and run this command: python get-pip.py
   4. Installing dependencies: run the following commands:
+  
                              1. python.exe -m pip install requests
+                             
                              2. python.exe -m pip install bs4
+                             
                              3. python.exe -m pip install getpass (ignore if already there)
+                             
                              4. python.exe -m pip install urllib2
+                             
                              5. python.exe -m pip install cookielib
+                            
+                             
   5. Now, you're actually ready to download the application. So, thats why I called you freaks (So many things to install!)
 
 
