@@ -3,6 +3,10 @@ import requests
 from bs4 import BeautifulSoup
 from custom_exceptions import *
 from config import *
+import urllib2
+import cookielib
+import sys
+from utils import Login
 import os
 from getpass import getpass
 
@@ -125,6 +129,10 @@ if __name__ == '__main__':
     with requests.Session() as session:
         username = raw_input("Enter your moodle username:  ")
         password = getpass("Enter your password:  ")
+        try:
+            Login(username,str(password))
+        except:
+            pass
         login(username,password,session)
         home_page = get_home_page(session)
         category = get_category_tree(home_page)
