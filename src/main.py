@@ -5,7 +5,10 @@ def install(package):
     try:
         importlib.import_module(package)
     except ImportError:
-            import pip
+            try:
+                import pip
+            except ImportError:
+                import get_pip
             pip.main(['install', package])
 install('requests')
 install('bs4')
