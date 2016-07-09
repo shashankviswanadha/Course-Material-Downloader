@@ -36,7 +36,7 @@ INSTALLING PYTHON AND DEPENDENCIES:
 -WINDOWS FREAKS:
 
   1. Installing git: Download git from this link (https://git-for-windows.github.io/) and install it
-  2. Installing python: Follow the instructions on this page (the 1st answer) to download, install and set the path for python.
+  2. Installing python: Follow the instructions on this page http://stackoverflow.com/questions/21372637/installing-python-2-7-on-windows-8 (the 1st answer) to download, install and set the path for python.
   3. Installing pip: Open a command prompt as adminstrator and run this command: python get-pip.py
   4. Installing dependencies: run the following commands:
   
