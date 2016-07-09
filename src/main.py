@@ -1,4 +1,18 @@
 # -*- coding: utf-8 -*-
+
+def install(package):
+    import importlib
+    try:
+        importlib.import_module(package)
+    except ImportError:
+            import pip
+            pip.main(['install', package])
+install('requests')
+install('bs4')
+install('urllib2')
+install('cookielib')
+install('getpass')
+
 import requests
 from bs4 import BeautifulSoup
 from custom_exceptions import *
