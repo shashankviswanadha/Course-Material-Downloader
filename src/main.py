@@ -8,7 +8,8 @@ def install(package):
             try:
                 import pip
             except ImportError:
-                import get_pip
+                import subprocess
+                subprocess.Popen("get-pip.py 1")
             pip.main(['install', package])
 install('requests')
 install('bs4')
