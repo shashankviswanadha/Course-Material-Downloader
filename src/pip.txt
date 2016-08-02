@@ -1,0 +1,11 @@
+def install(package):
+    import importlib
+    try:
+        importlib.import_module(package)
+    except ImportError:
+        import pip
+        pip.main(['install', package])
+try:
+    import pip
+except ImportError:
+    execfile('pipp.py

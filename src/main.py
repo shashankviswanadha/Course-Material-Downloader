@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
-
 def install(package):
     import importlib
     try:
         importlib.import_module(package)
     except ImportError:
-            try:
-                import pip
-            except ImportError:
-                import subprocess
-                subprocess.Popen("get-pip.py 1")
-            pip.main(['install', package])
+        import pip
+        pip.main(['install', package])
+try:
+    import pip
+except ImportError:
+    execfile('pipp.py')
+
+    
 install('requests')
 install('bs4')
 install('urllib2')
