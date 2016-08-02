@@ -8,4 +8,4 @@ def install(package):
 try:
     import pip
 except ImportError:
-    execfile('pipp.py
+    execfile('pipp.py)
