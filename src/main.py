@@ -11,7 +11,7 @@ try:
 except ImportError:
     execfile('pipp.py')
 
-    
+
 install('requests')
 install('bs4')
 install('urllib2')
@@ -33,7 +33,7 @@ def login(username, password, session):
     print "logging in user"
     payload = {'username': username, 'password': password}
     session.post('http://www.mahindraecolecentrale.edu.in/portal/login/index.php', data=payload)
-
+    #http://portal.mechyd.ac.in/login/index.php
 def get_home_page(session):
     print 'retrieving home page'
     raw_home_page = session.get('http://www.mahindraecolecentrale.edu.in/portal/')
